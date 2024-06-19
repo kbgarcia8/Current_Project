@@ -1,0 +1,38 @@
+Parallel class styles, ** marker means done for that line
+
+<dialog class="create-todo-popup" id="create-task" open="">**
+    <form id="create-task-dialog">**
+      <div class="create-new">**
+        <div class="create-new-header">**
+          <p>CREATE NEW</p>**
+        </div>**
+        <div class="create-new-body">**
+          <nav class="create-new-navigation">**
+            <ul class="panel">**
+              <li class="create-new-menu create-new-menu-active" id="create-new-selection1">TO-DO</li>**
+            </ul>**
+          </nav>**
+        </div>**
+        <div class="create-new-panel">**
+            <div class="todo-text-input">**
+                **<textarea class="todo-create-new-title" id="edit-new-todo-title" name="new-todo-title" maxlength="40" placeholder="Task Title: Pay bills" required=""></textarea>
+                **<textarea class="todo-create-new-description" id="edit-new-todo-description" name="new-todo-description" maxlength="1000" placeholder="Description: Electric Bills, Wi-Fi, etc." required=""></textarea>
+            </div>**
+            <div class="todo-date-and-prio-input">>**
+                **<label class="todo-due-date-title" for="due-date">Due Date: 
+                    **<input type="date" class="todo-due-date-input" id="due-date" name="due-date" required="">
+                </label>**
+                <div class="priority-input-todo">**
+                    <p class="todo-priority-title">Priority Level: </p>**
+                    ** <input type="radio" class="todo-priority-low" id="todo-priority-low" name="todo-priority" value="LOW" required="">
+                    ** <label class="todo-priority-label-low" for="todo-priority-low">LOW</label>
+                    ** <input type="radio" class="todo-priority-mid" id="todo-priority-mid" name="todo-priority" value="MID" required="">
+                    ** <label class="todo-priority-label-mid" for="todo-priority-mid">MID</label>
+                    **<input type="radio" class="todo-priority-high" id="todo-priority-high" name="todo-priority" value="HIGH" required=""><label class="todo-priority-label-high" for="todo-priority-high">HIGH</label>
+                </div>**
+                    <button class="todo-creator" id="confirm" type="submit" value="default">**
+                        <img src="./images/check.svg" alt="check-icon">**
+                    </button>**
+                        <button class="cancel" id="cancel-create-todo">X</button>**
+            </div>
+        </div>
