@@ -297,7 +297,7 @@ function displayTodoCatalogEntry (index, title, date, category, description, pri
   edit_todo_entry_node_16.setAttribute('type', 'radio');
   edit_todo_entry_node_16.setAttribute('class', 'todo-priority-low');
   edit_todo_entry_node_16.setAttribute('id', `edit-todo-entry${index}-priority-low`);
-  edit_todo_entry_node_16.setAttribute('name', 'edit-todo-entry-priority');
+  edit_todo_entry_node_16.setAttribute('name', `edit-todo-entry${index}-priority`);
   edit_todo_entry_node_16.setAttribute('value', 'LOW');
   edit_todo_entry_node_16.setAttribute('required', '');
   if (priority == "LOW") {
@@ -315,7 +315,7 @@ function displayTodoCatalogEntry (index, title, date, category, description, pri
   edit_todo_entry_node_19.setAttribute('type', 'radio');
   edit_todo_entry_node_19.setAttribute('class', 'todo-priority-mid');
   edit_todo_entry_node_19.setAttribute('id', `edit-todo-entry${index}-priority-mid`);
-  edit_todo_entry_node_19.setAttribute('name', 'edit-todo-entry-priority');
+  edit_todo_entry_node_19.setAttribute('name', `edit-todo-entry${index}-priority`);
   edit_todo_entry_node_19.setAttribute('value', 'MID');
   edit_todo_entry_node_19.setAttribute('required', '');
   if (priority == "MID") {
@@ -333,7 +333,7 @@ function displayTodoCatalogEntry (index, title, date, category, description, pri
   edit_todo_entry_node_22.setAttribute('type', 'radio');
   edit_todo_entry_node_22.setAttribute('class', 'todo-priority-high');
   edit_todo_entry_node_22.setAttribute('id', `edit-todo-entry${index}-priority-high`);
-  edit_todo_entry_node_22.setAttribute('name', 'edit-todo-entry-priority');
+  edit_todo_entry_node_22.setAttribute('name', `edit-todo-entry${index}-priority`);
   edit_todo_entry_node_22.setAttribute('value', 'HIGH');
   edit_todo_entry_node_22.setAttribute('required', '');
   if (priority == "HIGH") {
@@ -517,7 +517,10 @@ function renderTodos (activeTab, mainTodos) {
         const EditTodoForms = document.querySelectorAll('.edit-todo-popup-form');
         EditTodoForms.forEach(function(EditTodoForm, index) {
           //console.log(EditTodoForm);
-          EditTodoForm.addEventListener("submit", (e) => submitEditTodo(e, index, currentObject)); 
+          EditTodoForm.removeEventListener('submit', submitEditTodo);
+          EditTodoForm.addEventListener("submit", (e) => submitEditTodo(e, index, currentObject));
+          /*for check wether if re-displayTodoEntries are placed inside the submitEditTodo or outside (inside event
+          listener)*/
         });
       }
     }
@@ -846,7 +849,25 @@ function submitEditTodo(e, index, currentObject) {
   const modifiedTodoTitle = document.getElementById(`edit-todo-entry${index}-title`).value;
   const modifiedTodoDescription = document.getElementById(`edit-todo-entry${index}-description`).value;
   const modifiedTodoDueDate = document.getElementById(`edit-todo-entry${index}-due-date`).value;
-  const modifiedTodoPriority = document.querySelector('input[name=edit-todo-entry-priority]:checked').value;  
+  const modifiedTodoPriority = document.querySelector(`input[name=edit-todo-entry${index}-priority]:checked`).value;
+  console.log(modifiedTodoPriority);
+  console.log(currentObject[index].priority);
+  console.log(currentObject[index]);
+  const currentObjectIteration = currentObject[index];
+  
+  if (currentObject[index].title != modifiedTodoTitle) {
+    currentObject[index].title = modifiedTodoTitle;
+  } else {console.log("Title not edited");}
+  if (currentObject[index].description != modifiedTodoDescription) {
+    currentObject[index].description = modifiedTodoDescription;
+  } else {console.log("Description not edited");}
+  if (currentObject[index].date != modifiedTodoDueDate) {
+    currentObject[index].date = modifiedTodoDueDate;
+  } else {console.log("Due date not edited");}
+  if (currentObject[index].priority != modifiedTodoPriority) {
+    currentObject[index].priority = modifiedTodoPriority;
+  } else {console.log("Priority Level not edited");}
+  
   dialogEditTodo.close();
 }
 //to submit on the right key depending on what is the current active tab when the create button was clicked
