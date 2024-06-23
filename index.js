@@ -490,6 +490,16 @@ function renderTodos (activeTab, mainTodos) {
 
             mainPanel.removeChild(tobeRemovedTodoCatalog);
             console.log(currentObject);
+            const childNodes = mainPanel.childNodes;
+    
+            Array.from(childNodes).forEach(child => {
+              mainPanel.removeChild(child);
+            });
+            currentObject.forEach(function(entry, index) {
+              //console.log(entry);
+              let category = `${todoCategory}`;
+              displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
+            });
           });
         });
         //edit todo entry popup
@@ -850,9 +860,7 @@ function submitEditTodo(e, index, currentObject) {
   const modifiedTodoDescription = document.getElementById(`edit-todo-entry${index}-description`).value;
   const modifiedTodoDueDate = document.getElementById(`edit-todo-entry${index}-due-date`).value;
   const modifiedTodoPriority = document.querySelector(`input[name=edit-todo-entry${index}-priority]:checked`).value;
-  console.log(modifiedTodoPriority);
-  console.log(currentObject[index].priority);
-  console.log(currentObject[index]);
+  console.log(index);
   const currentObjectIteration = currentObject[index];
   
   if (currentObject[index].title != modifiedTodoTitle) {
@@ -867,7 +875,16 @@ function submitEditTodo(e, index, currentObject) {
   if (currentObject[index].priority != modifiedTodoPriority) {
     currentObject[index].priority = modifiedTodoPriority;
   } else {console.log("Priority Level not edited");}
-  
+  const childNodes = mainPanel.childNodes;
+    
+  Array.from(childNodes).forEach(child => {
+    mainPanel.removeChild(child);
+  });
+  currentObject.forEach(function(entry, index) {
+    //console.log(entry);
+    let category = `${todoCategory}`;
+    displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
+  });
   dialogEditTodo.close();
 }
 //to submit on the right key depending on what is the current active tab when the create button was clicked
