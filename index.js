@@ -365,9 +365,169 @@ function displayTodoCatalogEntry (index, title, date, category, description, pri
   edit_todo_entry_node_27.textContent = "X";
   edit_todo_entry_node_11.appendChild(edit_todo_entry_node_27);
 }
-//function to popup dialog for edit of todo catalog entry
-function editTodoCatalogEntry () {
+//todo entry details dialog open with eventlistener
+function openTodoDetails () {
+  const showTodoDetailsBtns = document.querySelectorAll('.todo-catalog-view-details-btn');
+  showTodoDetailsBtns.forEach(function(showTodoDetailsBtn, index) {
+    const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
+    showTodoDetailsBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      dialogTodoDetails.showModal();
+    });
+  });
+}
+//todo entry details dialog close with eventlistener
+function closeTodoDetails () {
+  const closeTodoDetailsBtns = document.querySelectorAll('.close-todo-details-btn');
+  closeTodoDetailsBtns.forEach(function(closeTodoDetailsBtn, index) {
+    const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
+    closeTodoDetailsBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      dialogTodoDetails.close();
+      });
+  });
+}
+//Change class if checkbox is toggled
+function checkboxChecker (currentObject) {
+  const todoEntryCheckBoxes = document.querySelectorAll("input[type=checkbox]");
+        //console.log(todoEntryCheckBoxes);
+  todoEntryCheckBoxes.forEach(function (todoEntryCheckBox, index) {
+    todoEntryCheckBox.addEventListener('change', function(e) {
+      if (this.checked) {
+        console.log("Checkbox is checked..");
+        const checkedbox = e.target;
+        //console.log(checkedbox);
 
+        //get all childNodes of todo catalog entry
+        const toLineThroughEntryChildren = checkedbox.parentNode.childNodes;
+        //Run through each childnodes
+        toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
+          if(toLineThroughEntryChild.classList.contains('todo-catalog-title-default')) {
+            //change class to strikethrough once box is checked
+            toLineThroughEntryChild.classList.remove('todo-catalog-title-default');
+            toLineThroughEntryChild.classList.add('todo-catalog-title-checked');
+            for (let i = 0; i < currentObject.length; i++) {
+              if(currentObject[i].title == toLineThroughEntryChild.textContent) {
+                //change status to true => meaning checked
+                currentObject[i].status = true;
+              }
+            }
+          }
+        });
+      } else {
+          console.log("Checkbox is not checked..");
+          const uncheckedbox = e.target;
+          //console.log(uncheckedbox);
+
+          //get all childNodes of todo catalog entry
+          const toLineThroughEntryChildren = uncheckedbox.parentNode.childNodes;
+          //Run through each childnodes
+          toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
+            if(toLineThroughEntryChild.classList.contains('todo-catalog-title-checked')) {
+              //change class to strikethrough once box is checked
+              toLineThroughEntryChild.classList.remove('todo-catalog-title-checked');
+              toLineThroughEntryChild.classList.add('todo-catalog-title-default');
+                  
+              for (let i = 0; i < currentObject.length; i++) {
+                if(currentObject[i].title == toLineThroughEntryChild.textContent) {
+                  //change status to true => meaning checked
+                  currentObject[i].status = false;
+                }
+              }
+            }
+          });
+        }
+    });
+  });
+}
+//todo entry delete catalog button
+function deleteCatalog (currentObject) {
+  const deleteTodoBtns = document.querySelectorAll('.todo-entry-delete-button');
+  deleteTodoBtns.forEach(function(deleteTodoBtn, index) {
+    deleteTodoBtn.addEventListener("click", function(e) {
+      
+      const clickedDelete = e.target;
+      const clickedTodoEntry = clickedDelete.parentNode.id;
+      const tobeRemovedTodoCatalog = document.getElementById(`${clickedTodoEntry}`);
+  
+      //get all childNodes of todo catalog entry
+      const clickedTodoEntryChildren = clickedDelete.parentNode.childNodes;
+      //splice respective entry on object
+      clickedTodoEntryChildren.forEach(function(clickedTodoEntryChild, index) {
+        if(clickedTodoEntryChild.classList.contains('todo-catalog-title-default')||
+        clickedTodoEntryChild.classList.contains('todo-catalog-title-checked')) {
+          //console.log(clickedTodoEntryChild);
+          //console.log(clickedTodoEntryChild.textContent);
+          for (let i = 0; i < currentObject.length; i++) {
+            if(currentObject[i].title == clickedTodoEntryChild.textContent) {
+              console.log(`Successfully removed ${currentObject[i]} entry`);
+              currentObject.splice(i, 1);
+            }
+          }
+        }
+      });
+
+      mainPanel.removeChild(tobeRemovedTodoCatalog);
+      console.log(currentObject);
+      const childNodes = mainPanel.childNodes;
+
+      Array.from(childNodes).forEach(child => {
+        mainPanel.removeChild(child);
+      });
+      currentObject.forEach(function(entry, index) {
+        //console.log(entry);
+        let category = `${todoCategory}`;
+        displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
+      });
+      openTodoDetails ();
+      //todo entry details dialog close
+      closeTodoDetails ();
+      //Change class if checkbox is toggled
+      checkboxChecker (currentObject);
+      //todo entry delete catalog button
+      deleteCatalog (currentObject);
+      //edit todo entry popup
+      openEditTodoDetails ();
+      //todo edit dialog close
+      closeEditTodoDetails ();
+      //todo edit form submit
+      submitEditTodoForm (currentObject);
+    });
+  });
+}
+ //edit todo entry popup open 
+function openEditTodoDetails () {
+  const editTodoBtns = document.querySelectorAll('.todo-entry-edit-button');
+  editTodoBtns.forEach(function(editTodoBtn, index) {
+    const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
+    editTodoBtn.addEventListener("click", function(e) {
+      const toEditCatalogEntryElements = editTodoBtn.parentNode.childNodes;
+      //const dialogEditTodo = document.querySelector(`#edit-todo-entry`);
+      //console.log(dialogEditTodo);
+      e.preventDefault();
+      dialogEditTodo.showModal();
+    });
+  });
+}
+//todo edit form submit
+function submitEditTodoForm (currentObject) {
+  const EditTodoForms = document.querySelectorAll('.edit-todo-popup-form');
+  EditTodoForms.forEach(function(EditTodoForm, index) {
+    //console.log(EditTodoForm);
+    EditTodoForm.removeEventListener('submit', submitEditTodo);
+    EditTodoForm.addEventListener("submit", (e) => submitEditTodo(e, index, currentObject));
+  });
+}
+ //edit todo entry popup close
+function closeEditTodoDetails () {
+  const closeEditBtns = document.querySelectorAll('#cancel-edit-todo');
+  closeEditBtns.forEach(function(closeEditBtn, index) {
+    const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
+    closeEditBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      dialogEditTodo.close();
+    });
+  });
 }
 //function to render todo catalogs, add eventlistener to open/close details dialog, delete entry and check if textbox is toggled
 function renderTodos (activeTab, mainTodos) {
@@ -394,144 +554,19 @@ function renderTodos (activeTab, mainTodos) {
           displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
         });
         //todo entry details dialog open
-        const showTodoDetailsBtns = document.querySelectorAll('.todo-catalog-view-details-btn');
-        showTodoDetailsBtns.forEach(function(showTodoDetailsBtn, index) {
-          const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
-          showTodoDetailsBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            dialogTodoDetails.showModal();
-          });
-        });
+        openTodoDetails ();
         //todo entry details dialog close
-        const closeTodoDetailsBtns = document.querySelectorAll('.close-todo-details-btn');
-        closeTodoDetailsBtns.forEach(function(closeTodoDetailsBtn, index) {
-          const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
-          closeTodoDetailsBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            dialogTodoDetails.close();
-          });
-        });
+        closeTodoDetails ();
         //Change class if checkbox is toggled
-        const todoEntryCheckBoxes = document.querySelectorAll("input[type=checkbox]");
-        //console.log(todoEntryCheckBoxes);
-        todoEntryCheckBoxes.forEach(function (todoEntryCheckBox, index) {
-          todoEntryCheckBox.addEventListener('change', function(e) {
-            if (this.checked) {
-              console.log("Checkbox is checked..");
-              const checkedbox = e.target;
-              //console.log(checkedbox);
-
-              //get all childNodes of todo catalog entry
-              const toLineThroughEntryChildren = checkedbox.parentNode.childNodes;
-              //Run through each childnodes
-              toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
-                if(toLineThroughEntryChild.classList.contains('todo-catalog-title-default')) {
-                  //change class to strikethrough once box is checked
-                  toLineThroughEntryChild.classList.remove('todo-catalog-title-default');
-                  toLineThroughEntryChild.classList.add('todo-catalog-title-checked');
-                  for (let i = 0; i < currentObject.length; i++) {
-                    if(currentObject[i].title == toLineThroughEntryChild.textContent) {
-                      //change status to true => meaning checked
-                      currentObject[i].status = true;
-                    }
-                  }
-                }
-              });
-            } else {
-              console.log("Checkbox is not checked..");
-              const uncheckedbox = e.target;
-              //console.log(uncheckedbox);
-
-              //get all childNodes of todo catalog entry
-              const toLineThroughEntryChildren = uncheckedbox.parentNode.childNodes;
-              //Run through each childnodes
-              toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
-                if(toLineThroughEntryChild.classList.contains('todo-catalog-title-checked')) {
-                  //change class to strikethrough once box is checked
-                  toLineThroughEntryChild.classList.remove('todo-catalog-title-checked');
-                  toLineThroughEntryChild.classList.add('todo-catalog-title-default');
-                  
-                  for (let i = 0; i < currentObject.length; i++) {
-                    if(currentObject[i].title == toLineThroughEntryChild.textContent) {
-                      //change status to true => meaning checked
-                      currentObject[i].status = false;
-                    }
-                  }
-                }
-              });
-            }
-          });
-        });
+        checkboxChecker (currentObject);
         //todo entry delete catalog button
-        const deleteTodoBtns = document.querySelectorAll('.todo-entry-delete-button');
-        deleteTodoBtns.forEach(function(deleteTodoBtn, index) {
-          deleteTodoBtn.addEventListener("click", function(e) {
-            
-            const clickedDelete = e.target;
-            const clickedTodoEntry = clickedDelete.parentNode.id;
-            const tobeRemovedTodoCatalog = document.getElementById(`${clickedTodoEntry}`);
-        
-            //get all childNodes of todo catalog entry
-            const clickedTodoEntryChildren = clickedDelete.parentNode.childNodes;
-            //splice respective entry on object
-            clickedTodoEntryChildren.forEach(function(clickedTodoEntryChild, index) {
-              if(clickedTodoEntryChild.classList.contains('todo-catalog-title-default')||
-              clickedTodoEntryChild.classList.contains('todo-catalog-title-checked')) {
-                //console.log(clickedTodoEntryChild);
-                //console.log(clickedTodoEntryChild.textContent);
-                for (let i = 0; i < currentObject.length; i++) {
-                  if(currentObject[i].title == clickedTodoEntryChild.textContent) {
-                    console.log(`Successfully removed ${currentObject[i]} entry`);
-                    currentObject.splice(i, 1);
-                  }
-                }
-              }
-            });
-
-            mainPanel.removeChild(tobeRemovedTodoCatalog);
-            console.log(currentObject);
-            const childNodes = mainPanel.childNodes;
-    
-            Array.from(childNodes).forEach(child => {
-              mainPanel.removeChild(child);
-            });
-            currentObject.forEach(function(entry, index) {
-              //console.log(entry);
-              let category = `${todoCategory}`;
-              displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
-            });
-          });
-        });
+        deleteCatalog (currentObject);
         //edit todo entry popup
-        const editTodoBtns = document.querySelectorAll('.todo-entry-edit-button');
-        editTodoBtns.forEach(function(editTodoBtn, index) {
-          const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
-          editTodoBtn.addEventListener("click", function(e) {
-            const toEditCatalogEntryElements = editTodoBtn.parentNode.childNodes;
-            //const dialogEditTodo = document.querySelector(`#edit-todo-entry`);
-            //console.log(dialogEditTodo);
-            e.preventDefault();
-            dialogEditTodo.showModal();
-          });
-        });
+        openEditTodoDetails ();
         //todo edit dialog close
-        const closeEditBtns = document.querySelectorAll('#cancel-edit-todo');
-        closeEditBtns.forEach(function(closeEditBtn, index) {
-          const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
-          closeEditBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            dialogEditTodo.close();
-          });
-        });
+        closeEditTodoDetails ();
         //todo edit form submit
-        const EditTodoForms = document.querySelectorAll('.edit-todo-popup-form');
-        EditTodoForms.forEach(function(EditTodoForm, index) {
-          //console.log(EditTodoForm);
-          EditTodoForm.removeEventListener('submit', submitEditTodo);
-          EditTodoForm.addEventListener("submit", (e) => submitEditTodo(e, index, currentObject));
-          /*for check wether if re-displayTodoEntries are placed inside the submitEditTodo or outside (inside event
-          listener)*/
-        });
+        submitEditTodoForm (currentObject);
       }
     }
   }
@@ -885,6 +920,19 @@ function submitEditTodo(e, index, currentObject) {
     let category = `${todoCategory}`;
     displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
   });
+  openTodoDetails ();
+  //todo entry details dialog close
+  closeTodoDetails ();
+  //Change class if checkbox is toggled
+  checkboxChecker (currentObject);
+  //todo entry delete catalog button
+  deleteCatalog (currentObject);
+  //edit todo entry popup
+  openEditTodoDetails ();
+  //todo edit dialog close
+  closeEditTodoDetails ();
+  //todo edit form submit
+  submitEditTodoForm (currentObject);
   dialogEditTodo.close();
 }
 //to submit on the right key depending on what is the current active tab when the create button was clicked

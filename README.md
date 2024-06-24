@@ -38,15 +38,15 @@ Process of edit if VSCode Web is used:
     - <s>Style the overflow scroll bar</s>
     - <s>Create a function to print/show each todo entry programmatically (compile render todo into one function for reusability on other project category)</s>
     - <b>Functionality to make todo catalog editable using pop up dialog (todoFunction.js reference start at line 290), line 339 at JS code</b>
-        1. </s>Append sa displaytodocatalog function yung dialog for this</s>
-        2. </s>Use current object to assign text contents for inputs</s>
-        3. Process data of submit form [RAW]
-        4. Way to know if na toggle yung value do that otherwise mag compare nalang
+        1. <s>Append sa displaytodocatalog function yung dialog for this</s>
+        2. <s>Use current object to assign text contents for inputs</s>
+        3. <s>Process data of submit form [RAW]</s>
+        4. <s>Way to know if na toggle yung value do that otherwise mag compare nalang</s>
             pagka-submit
-        5. Anitcipate that if may pose a problem to not re-display todo catalogs right after deletion
+        5. <s>Anitcipate that if may pose a problem to not re-display todo catalogs right after deletion
             (may result in edit not falling into right index) -> can be a solution to this is find first the index
-            at which the current is on before editting the object/index
-    - put border (left only or whole box of catalog) depending on priority
+            at which the current is on before editting the object/index</s>
+    - put border (left only or whole box of catalog) depending on priority (OPTIONAL)
 2. Project tab
     - <s>If project is created the title will be created as an LI under UL with class projects under the PROJECT LI tag</s>
 3. Notes tab
@@ -54,6 +54,7 @@ Process of edit if VSCode Web is used:
 3. All todo tabs
     - Sort main todo if today or this week, auto-sort if possible OR just add a marker if overdue at TODAY panel
     - <s>ALSO differentiate today/week todo with project todo depending on active mainpanel if this does not work just create different button when opening dialog if possible</s>
+    - Calculate summary of Tasks function
     - Determine at which point mag stringify and parse para ma mantain utilization ng localStorage
 
 #### Node/Tab/Page/Stage: Popup Dialog (create)
