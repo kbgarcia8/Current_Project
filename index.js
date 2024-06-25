@@ -972,14 +972,14 @@ const mainPanelNoteBtn = document.querySelector("#main-panel-selection4");
 const mainPanelProjectTab= document.querySelector("#main-panel-selection5");
 const mainPanelOpen = new mainPanelRender();
 
-//parse on local storage or create empty new mainTodos, projectTodos, notes
+//parse on local storage or create empty new mainTodos and notes
 const mainTodos = JSON.parse(localStorage.getItem('mainTodos')) || {
   "today" : [],
   "week" : [],
 }
 
-const projectTodos = JSON.parse(localStorage.getItem('projectTodos')) || [];
-const notes = JSON.parse(localStorage.getItem('notes')) || [];
+//const projectTodos = JSON.parse(localStorage.getItem('projectTodos')) || [];
+const notes = JSON.parse(localStorage.getItem('notes')) || {};
 
 //create a mock details if no object found on local storage
 if (!localStorage.getItem('mainTodos')) { 
@@ -1016,7 +1016,7 @@ let activeProjectCategoryTab = null;
 const projectTabIsActivePattern = new RegExp("projects", 'i');
 /*MAIN PANEL*/
 //Render home summary upon open of page
-mainPanelOpen.homeSummary();
+//mainPanelOpen.homeSummary();
 mainPanelHomeBtn.classList.add('main-panel-menu-active');
 //adding event listener to main nav bar
 mainPanelNavigationBtns.forEach(function(mainPanelNavigationBtn, index) {
