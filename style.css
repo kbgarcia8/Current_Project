@@ -599,3 +599,25 @@ set what happens as the hover happens */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 }
+.notes {
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+  width: 25%;
+  background-color: #61c566;
+  padding: 0.75vw;
+  border: 0.25vw black solid;
+}
+.note-title {
+  border: 2px red solid;
+  font-weight: 900;
+  
+}
+.note-description-body {
+  border: 2px red solid;
+  height: 100%;
+  padding: 0.5vw;
+}
+.note-description-text {
+  border: 2px red solid;
+}
