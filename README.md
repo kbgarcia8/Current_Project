@@ -51,6 +51,10 @@ Process of edit if VSCode Web is used:
     - <s>If project is created the title will be created as an LI under UL with class projects under the PROJECT LI tag</s>
 3. Notes tab
     - <b>Create function to renderNotes</b>
+        1. <s>function createNotes</s>
+        2. <s>function displayNoteCatalogEntry</s>
+        3. <s>function renderNotes</s>
+            - <s>submit edit note form function</s>
 3. All todo tabs
     - Sort main todo if today or this week, auto-sort if possible OR just add a marker if overdue at TODAY panel
     - <s>ALSO differentiate today/week todo with project todo depending on active mainpanel if this does not work just create different button when opening dialog if possible</s>

@@ -36,3 +36,35 @@ Parallel class styles, ** marker means done for that line
                         <button class="cancel" id="cancel-create-todo">X</button>**
             </div>
         </div>
+
+        <!--note catalog entry-->
+        <div class="notes" id="note-entry1">
+          <div class="note-buttons">
+            <img src="./images/eye-view.svg" alt="" class="view-note" id="view-note-entry">
+            <img src="./images/x-delete.svg" alt="" class="delete-note" id="delete-note-entry">
+          </div>
+          
+          <div class="note-title" id="note-entry1-title">SAMPLE NOTE</div>
+          <div class="note-description-body">
+            <div class="note-description-text" id="note-entry1-description-text">Add Text Here....</div>
+          </div>
+        </div>
+
+
+**        <dialog class="edit-note-popup" id="edit-note-entry1">
+**          <form class="edit-note-popup-form" id="edit-note-entry1-form">
+**            <div class="edit-note">
+**              <div class="edit-note-header">
+**                <p>EDIT or VIEW NOTE DETAIL</p>
+**              </div>
+**              <div class="edit-note-panel">
+**                <div class="edit-note-text-input">
+**                  <textarea class="note-create-new-title" id="edit-new-note-title" name="new-note-title" maxlength="40" required=""></textarea>
+**                  <textarea class="note-create-new-description" id="edit-new-note-description" name="new-note-description" maxlength="1000" required=""></textarea>
+**                </div> 
+                <button class="note-editor" id="confirm" type="submit" value="default">Submit</button>
+                <button class="cancel" id="cancel-edit-note">Close</button>
+              </div>
+            </div>
+        </form>
+      </dialog>

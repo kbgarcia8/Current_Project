@@ -188,3 +188,186 @@ function renderEdit(e, todos) {
         overlay.classList.toggle("overlay-edit-invisible");
 
     }
+
+
+//edit dialog panel 
+  var edit_todo_entry_node_1 = document.createElement('DIALOG');
+  edit_todo_entry_node_1.setAttribute('class', 'edit-todo-popup');
+  edit_todo_entry_node_1.setAttribute('id', `edit-todo-entry${index}`);
+  todo_entry_node_2.appendChild(edit_todo_entry_node_1);
+
+  var edit_todo_entry_node_2 = document.createElement('FORM');
+  edit_todo_entry_node_2.setAttribute('class', 'edit-todo-popup-form');
+  edit_todo_entry_node_2.setAttribute('id', `edit-todo-entry${index}-form`);
+  edit_todo_entry_node_1.appendChild(edit_todo_entry_node_2);
+
+  var edit_todo_entry_node_3 = document.createElement('DIV');
+  edit_todo_entry_node_3.setAttribute('class', 'edit-todo');
+  edit_todo_entry_node_2.appendChild(edit_todo_entry_node_3);
+
+  var edit_todo_entry_node_4 = document.createElement('DIV');
+  edit_todo_entry_node_4.setAttribute('class', 'edit-todo-header');
+  edit_todo_entry_node_3.appendChild(edit_todo_entry_node_4);
+
+  var edit_todo_entry_node_5 = document.createElement('P');
+  edit_todo_entry_node_5.textContent = "EDIT TODO";
+  edit_todo_entry_node_4.appendChild(edit_todo_entry_node_5);
+
+  var edit_todo_entry_node_7 = document.createElement('DIV');
+  edit_todo_entry_node_7.setAttribute('class', 'edit-todo-panel');
+  edit_todo_entry_node_3.appendChild(edit_todo_entry_node_7);
+
+  var edit_todo_entry_node_8 = document.createElement('DIV');
+  edit_todo_entry_node_8.setAttribute('class', 'todo-text-input');
+  edit_todo_entry_node_7.appendChild(edit_todo_entry_node_8);
+
+  var edit_todo_entry_node_9 = document.createElement('TEXTAREA');
+  edit_todo_entry_node_9.setAttribute('class', 'todo-edit-title');
+  edit_todo_entry_node_9.setAttribute('id', `edit-todo-entry${index}-title`);
+  edit_todo_entry_node_9.setAttribute('name', 'edit-todo-title');
+  edit_todo_entry_node_9.setAttribute('maxlength', '40');
+  edit_todo_entry_node_9.setAttribute('placeholder', 'Task Title: Pay bills');
+  edit_todo_entry_node_9.setAttribute('required', '');
+  edit_todo_entry_node_9.textContent = `${title}`;
+  edit_todo_entry_node_8.appendChild(edit_todo_entry_node_9);
+
+  var edit_todo_entry_node_10 = document.createElement('TEXTAREA');
+  edit_todo_entry_node_10.setAttribute('class', 'todo-edit-description');
+  edit_todo_entry_node_10.setAttribute('id', `edit-todo-entry${index}-description`);
+  edit_todo_entry_node_10.setAttribute('name', 'edit-todo-description');
+  edit_todo_entry_node_10.setAttribute('maxlength', '1000');
+  edit_todo_entry_node_10.setAttribute('placeholder', 'Description: Electric Bills, Wi-Fi, etc.');
+  //edit_todo_entry_node_10.setAttribute('required', ''); due to some todo has no description
+  edit_todo_entry_node_10.textContent = `${description}`;
+  edit_todo_entry_node_8.appendChild(edit_todo_entry_node_10);
+
+  var edit_todo_entry_node_11 = document.createElement('DIV');
+  edit_todo_entry_node_11.setAttribute('class', 'todo-edit-date-and-prio-input');
+  edit_todo_entry_node_7.appendChild(edit_todo_entry_node_11);
+
+  var edit_todo_entry_node_12 = document.createElement('LABEL');
+  edit_todo_entry_node_12.setAttribute('class', 'todo-edit-due-date-title');
+  edit_todo_entry_node_12.setAttribute('for', `edit-todo-entry${index}-due-date`);
+  edit_todo_entry_node_12.textContent = "Due Date: ";
+  edit_todo_entry_node_11.appendChild(edit_todo_entry_node_12);
+
+  var edit_todo_entry_node_13 = document.createElement('INPUT');
+  edit_todo_entry_node_13.setAttribute('type', 'date');
+  edit_todo_entry_node_13.setAttribute('class', 'todo-edit-due-date-input');
+  edit_todo_entry_node_13.setAttribute('id', `edit-todo-entry${index}-due-date`);
+  edit_todo_entry_node_13.setAttribute('name', 'edit-todo-entry-due-date');
+  edit_todo_entry_node_13.setAttribute('required', '');
+  edit_todo_entry_node_13.setAttribute('value', `${date}`);
+  edit_todo_entry_node_12.appendChild(edit_todo_entry_node_13);
+
+  var edit_todo_entry_node_14 = document.createElement('DIV');
+  edit_todo_entry_node_14.setAttribute('class', 'priority-input-edit-todo');
+  edit_todo_entry_node_11.appendChild(edit_todo_entry_node_14);
+
+  var edit_todo_entry_node_15 = document.createElement('P');
+  edit_todo_entry_node_15.setAttribute('class', 'edit-todo-priority-title');
+  edit_todo_entry_node_15.textContent = "Prioritry Level: ";
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_15);
+
+  var edit_todo_entry_node_16 = document.createElement('INPUT');
+  edit_todo_entry_node_16.setAttribute('type', 'radio');
+  edit_todo_entry_node_16.setAttribute('class', 'todo-priority-low');
+  edit_todo_entry_node_16.setAttribute('id', `edit-todo-entry${index}-priority-low`);
+  edit_todo_entry_node_16.setAttribute('name', `edit-todo-entry${index}-priority`);
+  edit_todo_entry_node_16.setAttribute('value', 'LOW');
+  edit_todo_entry_node_16.setAttribute('required', '');
+  if (priority == "LOW") {
+  edit_todo_entry_node_16.setAttribute('checked', '');
+  }
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_16);
+
+  var edit_todo_entry_node_17 = document.createElement('LABEL');
+  edit_todo_entry_node_17.setAttribute('class', 'todo-priority-label-low');
+  edit_todo_entry_node_17.setAttribute('for', `edit-todo-entry${index}-priority-low`);
+  edit_todo_entry_node_17.textContent = "LOW";
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_17);
+
+  var edit_todo_entry_node_19 = document.createElement('INPUT');
+  edit_todo_entry_node_19.setAttribute('type', 'radio');
+  edit_todo_entry_node_19.setAttribute('class', 'todo-priority-mid');
+  edit_todo_entry_node_19.setAttribute('id', `edit-todo-entry${index}-priority-mid`);
+  edit_todo_entry_node_19.setAttribute('name', `edit-todo-entry${index}-priority`);
+  edit_todo_entry_node_19.setAttribute('value', 'MID');
+  edit_todo_entry_node_19.setAttribute('required', '');
+  if (priority == "MID") {
+    edit_todo_entry_node_19.setAttribute('checked', '');
+  }
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_19);
+
+  var edit_todo_entry_node_20 = document.createElement('LABEL');
+  edit_todo_entry_node_20.setAttribute('class', 'todo-priority-label-mid');
+  edit_todo_entry_node_20.setAttribute('for', `edit-todo-entry${index}-priority-mid`);
+  edit_todo_entry_node_20.textContent = "MID";
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_20);
+
+  var edit_todo_entry_node_22 = document.createElement('INPUT');
+  edit_todo_entry_node_22.setAttribute('type', 'radio');
+  edit_todo_entry_node_22.setAttribute('class', 'todo-priority-high');
+  edit_todo_entry_node_22.setAttribute('id', `edit-todo-entry${index}-priority-high`);
+  edit_todo_entry_node_22.setAttribute('name', `edit-todo-entry${index}-priority`);
+  edit_todo_entry_node_22.setAttribute('value', 'HIGH');
+  edit_todo_entry_node_22.setAttribute('required', '');
+  if (priority == "HIGH") {
+    edit_todo_entry_node_22.setAttribute('checked', '');
+  }
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_22);
+
+  var edit_todo_entry_node_23 = document.createElement('LABEL');
+  edit_todo_entry_node_23.setAttribute('class', 'todo-priority-label-high');
+  edit_todo_entry_node_23.setAttribute('for', `edit-todo-entry${index}-priority-high`);
+  edit_todo_entry_node_23.textContent = "HIGH";
+  edit_todo_entry_node_14.appendChild(edit_todo_entry_node_23);
+
+  var edit_todo_entry_node_25 = document.createElement('BUTTON');
+  edit_todo_entry_node_25.setAttribute('class', 'todo-editor');
+  edit_todo_entry_node_25.setAttribute('id', 'confirm');
+  edit_todo_entry_node_25.setAttribute('type', 'submit');
+  edit_todo_entry_node_25.setAttribute('value', 'default');
+  edit_todo_entry_node_11.appendChild(edit_todo_entry_node_25);
+
+  var edit_todo_entry_node_26 = document.createElement('IMG');
+  edit_todo_entry_node_26.setAttribute('src', './images/check.svg');
+  edit_todo_entry_node_26.setAttribute('alt', 'check-icon');
+  edit_todo_entry_node_25.appendChild(edit_todo_entry_node_26);
+
+  var edit_todo_entry_node_27 = document.createElement('BUTTON');
+  edit_todo_entry_node_27.setAttribute('class', 'cancel');
+  edit_todo_entry_node_27.setAttribute('id', 'cancel-edit-todo');
+  edit_todo_entry_node_27.textContent = "X";
+  edit_todo_entry_node_11.appendChild(edit_todo_entry_node_27);
+
+
+  //get all childNodes of todo catalog entry
+      const clickedTodoEntryChildren = clickedDelete.parentNode.childNodes;
+      //splice respective entry on object
+      clickedTodoEntryChildren.forEach(function(clickedTodoEntryChild, index) {
+        if(clickedTodoEntryChild.classList.contains('todo-catalog-title-default')||
+        clickedTodoEntryChild.classList.contains('todo-catalog-title-checked')) {
+          //console.log(clickedTodoEntryChild);
+          //console.log(clickedTodoEntryChild.textContent);
+          for (let i = 0; i < currentTodoObject.length; i++) {
+            if(currentTodoObject[i].title == clickedTodoEntryChild.textContent) {
+              console.log(`Successfully removed ${currentTodoObject[i]} entry`);
+              currentTodoObject.splice(i, 1);
+            }
+          }
+        }
+      });
+
+      mainPanel.removeChild(tobeRemovedTodoCatalog);
+      console.log(currentTodoObject);
+      const childNodes = mainPanel.childNodes;
+
+      Array.from(childNodes).forEach(child => {
+        mainPanel.removeChild(child);
+      });
+      currentTodoObject.forEach(function(entry, index) {
+        //console.log(entry);
+        let category = `${todoCategory}`;
+        displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
+      });

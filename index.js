@@ -65,7 +65,7 @@ class mainPanelRender {
     Array.from(childNodes).forEach(child => {
       mainPanel.removeChild(child);
     });
-    mainPanel.setAttribute('style', 'padding: 2vh; flex-direction: column; overflow-y: auto; ');
+    mainPanel.setAttribute('style', 'padding: 2vh; display: grid; grid-template-columns: repeat(4, 22.5%); column-gap: 2.5%;');
   }
 }
 //function to push created and processed item to mainTodos object/task
@@ -365,170 +365,6 @@ function displayTodoCatalogEntry (index, title, date, category, description, pri
   edit_todo_entry_node_27.textContent = "X";
   edit_todo_entry_node_11.appendChild(edit_todo_entry_node_27);
 }
-//todo entry details dialog open with eventlistener
-function openTodoDetails () {
-  const showTodoDetailsBtns = document.querySelectorAll('.todo-catalog-view-details-btn');
-  showTodoDetailsBtns.forEach(function(showTodoDetailsBtn, index) {
-    const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
-    showTodoDetailsBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      dialogTodoDetails.showModal();
-    });
-  });
-}
-//todo entry details dialog close with eventlistener
-function closeTodoDetails () {
-  const closeTodoDetailsBtns = document.querySelectorAll('.close-todo-details-btn');
-  closeTodoDetailsBtns.forEach(function(closeTodoDetailsBtn, index) {
-    const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
-    closeTodoDetailsBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      dialogTodoDetails.close();
-      });
-  });
-}
-//Change class if checkbox is toggled
-function checkboxChecker (currentObject) {
-  const todoEntryCheckBoxes = document.querySelectorAll("input[type=checkbox]");
-        //console.log(todoEntryCheckBoxes);
-  todoEntryCheckBoxes.forEach(function (todoEntryCheckBox, index) {
-    todoEntryCheckBox.addEventListener('change', function(e) {
-      if (this.checked) {
-        console.log("Checkbox is checked..");
-        const checkedbox = e.target;
-        //console.log(checkedbox);
-
-        //get all childNodes of todo catalog entry
-        const toLineThroughEntryChildren = checkedbox.parentNode.childNodes;
-        //Run through each childnodes
-        toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
-          if(toLineThroughEntryChild.classList.contains('todo-catalog-title-default')) {
-            //change class to strikethrough once box is checked
-            toLineThroughEntryChild.classList.remove('todo-catalog-title-default');
-            toLineThroughEntryChild.classList.add('todo-catalog-title-checked');
-            for (let i = 0; i < currentObject.length; i++) {
-              if(currentObject[i].title == toLineThroughEntryChild.textContent) {
-                //change status to true => meaning checked
-                currentObject[i].status = true;
-              }
-            }
-          }
-        });
-      } else {
-          console.log("Checkbox is not checked..");
-          const uncheckedbox = e.target;
-          //console.log(uncheckedbox);
-
-          //get all childNodes of todo catalog entry
-          const toLineThroughEntryChildren = uncheckedbox.parentNode.childNodes;
-          //Run through each childnodes
-          toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
-            if(toLineThroughEntryChild.classList.contains('todo-catalog-title-checked')) {
-              //change class to strikethrough once box is checked
-              toLineThroughEntryChild.classList.remove('todo-catalog-title-checked');
-              toLineThroughEntryChild.classList.add('todo-catalog-title-default');
-                  
-              for (let i = 0; i < currentObject.length; i++) {
-                if(currentObject[i].title == toLineThroughEntryChild.textContent) {
-                  //change status to true => meaning checked
-                  currentObject[i].status = false;
-                }
-              }
-            }
-          });
-        }
-    });
-  });
-}
-//todo entry delete catalog button
-function deleteCatalog (currentObject) {
-  const deleteTodoBtns = document.querySelectorAll('.todo-entry-delete-button');
-  deleteTodoBtns.forEach(function(deleteTodoBtn, index) {
-    deleteTodoBtn.addEventListener("click", function(e) {
-      
-      const clickedDelete = e.target;
-      const clickedTodoEntry = clickedDelete.parentNode.id;
-      const tobeRemovedTodoCatalog = document.getElementById(`${clickedTodoEntry}`);
-  
-      //get all childNodes of todo catalog entry
-      const clickedTodoEntryChildren = clickedDelete.parentNode.childNodes;
-      //splice respective entry on object
-      clickedTodoEntryChildren.forEach(function(clickedTodoEntryChild, index) {
-        if(clickedTodoEntryChild.classList.contains('todo-catalog-title-default')||
-        clickedTodoEntryChild.classList.contains('todo-catalog-title-checked')) {
-          //console.log(clickedTodoEntryChild);
-          //console.log(clickedTodoEntryChild.textContent);
-          for (let i = 0; i < currentObject.length; i++) {
-            if(currentObject[i].title == clickedTodoEntryChild.textContent) {
-              console.log(`Successfully removed ${currentObject[i]} entry`);
-              currentObject.splice(i, 1);
-            }
-          }
-        }
-      });
-
-      mainPanel.removeChild(tobeRemovedTodoCatalog);
-      console.log(currentObject);
-      const childNodes = mainPanel.childNodes;
-
-      Array.from(childNodes).forEach(child => {
-        mainPanel.removeChild(child);
-      });
-      currentObject.forEach(function(entry, index) {
-        //console.log(entry);
-        let category = `${todoCategory}`;
-        displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
-      });
-      openTodoDetails ();
-      //todo entry details dialog close
-      closeTodoDetails ();
-      //Change class if checkbox is toggled
-      checkboxChecker (currentObject);
-      //todo entry delete catalog button
-      deleteCatalog (currentObject);
-      //edit todo entry popup
-      openEditTodoDetails ();
-      //todo edit dialog close
-      closeEditTodoDetails ();
-      //todo edit form submit
-      submitEditTodoForm (currentObject);
-    });
-  });
-}
- //edit todo entry popup open 
-function openEditTodoDetails () {
-  const editTodoBtns = document.querySelectorAll('.todo-entry-edit-button');
-  editTodoBtns.forEach(function(editTodoBtn, index) {
-    const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
-    editTodoBtn.addEventListener("click", function(e) {
-      const toEditCatalogEntryElements = editTodoBtn.parentNode.childNodes;
-      //const dialogEditTodo = document.querySelector(`#edit-todo-entry`);
-      //console.log(dialogEditTodo);
-      e.preventDefault();
-      dialogEditTodo.showModal();
-    });
-  });
-}
-//todo edit form submit
-function submitEditTodoForm (currentObject) {
-  const EditTodoForms = document.querySelectorAll('.edit-todo-popup-form');
-  EditTodoForms.forEach(function(EditTodoForm, index) {
-    //console.log(EditTodoForm);
-    EditTodoForm.removeEventListener('submit', submitEditTodo);
-    EditTodoForm.addEventListener("submit", (e) => submitEditTodo(e, index, currentObject));
-  });
-}
- //edit todo entry popup close
-function closeEditTodoDetails () {
-  const closeEditBtns = document.querySelectorAll('#cancel-edit-todo');
-  closeEditBtns.forEach(function(closeEditBtn, index) {
-    const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
-    closeEditBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      dialogEditTodo.close();
-    });
-  });
-}
 //function to render todo catalogs, add eventlistener to open/close details dialog, delete entry and check if textbox is toggled
 function renderTodos (activeTab, mainTodos) {
   if (activeTab != "MY HOME" && activeTab != "MY NOTES") {
@@ -540,15 +376,15 @@ function renderTodos (activeTab, mainTodos) {
       const todoCategoryPattern = new RegExp(todoCategory, 'i');
       if (activeTab.match(todoCategoryPattern)) {
         //console.log(todoCategory);
-        const currentObject = mainTodos[`${todoCategory}`];
-        //console.log(currentObject.length);
-        if (currentObject.length == 0) {
+        const currentTodoObject = mainTodos[`${todoCategory}`];
+        //console.log(currentTodoObject.length);
+        if (currentTodoObject.length == 0) {
           var mainpanel_todo_node = document.createElement('SPAN');
-          mainpanel_todo_node.setAttribute('class', 'todo-empty-currentobject-message');
+          mainpanel_todo_node.setAttribute('class', 'todo-empty-currentTodoObject-message');
           mainpanel_todo_node.textContent = "No todo added here yet click the \"+\" button to add."
           mainPanel.appendChild(mainpanel_todo_node);
         }
-        currentObject.forEach(function(entry, index) {
+        currentTodoObject.forEach(function(entry, index) {
           //console.log(entry);
           let category = `${todoCategory}`;
           displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
@@ -558,17 +394,33 @@ function renderTodos (activeTab, mainTodos) {
         //todo entry details dialog close
         closeTodoDetails ();
         //Change class if checkbox is toggled
-        checkboxChecker (currentObject);
+        checkboxChecker (currentTodoObject);
         //todo entry delete catalog button
-        deleteCatalog (currentObject);
+        deleteTodoCatalog (currentTodoObject);
         //edit todo entry popup
         openEditTodoDetails ();
         //todo edit dialog close
         closeEditTodoDetails ();
         //todo edit form submit
-        submitEditTodoForm (currentObject);
+        submitEditTodoForm (currentTodoObject);
       }
     }
+  }
+}
+//to submit on the right key depending on what is the current active tab when the create button was clicked
+function sortToCategory (mainTodos, parsedTodoInput, currentMainPanelWindow) {
+  //For use to loop through keys of mainTodos => categories
+  const todoCategories = Object.keys(mainTodos);
+  for (todoCategory of todoCategories) {
+    const todoCategoryPattern = new RegExp(currentMainPanelWindow, 'i');
+    const isKeyThere = `${todoCategory}` in mainTodos;
+    if (todoCategory.match(todoCategoryPattern) && isKeyThere == true) {
+      mainTodos[`${todoCategory}`].push(parsedTodoInput.mainTodoObject());
+      console.log(parsedTodoInput);
+      console.log(`Added to ${todoCategory} please check updated object below`);
+      console.log(mainTodos);
+    } else if (!todoCategory.match(todoCategoryPattern) && isKeyThere == true) {console.log(`${todoCategory} is currently not the designated category of todo to be added`);
+    } else if (!todoCategory.match(todoCategoryPattern) && isKeyThere == false) {console.log("No category for currently active tab in mainTodos Object");}
   }
 }
 //create addtional tab at the navigation bar with respect to available keys on mainTodos object and add eventlistener to each tab and whenever there is a new one
@@ -629,6 +481,151 @@ function createProjectTab (mainTodos) {
         return activeProjectCategoryTab;
     });
   });
+}
+//function to push created and processed item to notes object
+function createNote(title, description) {
+  return {
+    title: title,
+    description: description,
+    mainNoteObject () {
+      const noteObject = {
+        "title": title,
+        "description": description,
+      }
+      return noteObject;
+    },
+  };
+}
+//function to display note catalogs
+function displayNoteCatalogEntry (index, title, description) {
+  var note_entry_node_1 = document.createElement('DIV');
+  note_entry_node_1.setAttribute('class', 'notes');
+  note_entry_node_1.setAttribute('id', `note-entry${index}`);
+  mainPanel.appendChild(note_entry_node_1);
+
+  var note_entry_node_2 = document.createElement('DIV');
+  note_entry_node_2.setAttribute('class', 'note-buttons');
+  note_entry_node_1.appendChild(note_entry_node_2);
+
+  var note_entry_node_3 = document.createElement('IMG');
+  note_entry_node_3.setAttribute('src', './images/eye-view.svg');
+  note_entry_node_3.setAttribute('alt', '');
+  note_entry_node_3.setAttribute('class', 'view-note');
+  note_entry_node_3.setAttribute('id', `view-note-entry${index}`);
+  note_entry_node_2.appendChild(note_entry_node_3);
+  
+  var note_entry_node_4 = document.createElement('IMG');
+  note_entry_node_4.setAttribute('src', './images/x-delete.svg');
+  note_entry_node_4.setAttribute('alt', '');
+  note_entry_node_4.setAttribute('class', 'delete-note');
+  note_entry_node_4.setAttribute('id', `delete-note-entry${index}`);
+  note_entry_node_2.appendChild(note_entry_node_4);
+  
+  var note_entry_node_5 = document.createElement('DIV');
+  note_entry_node_5.setAttribute('class', 'note-title');
+  note_entry_node_5.setAttribute('id', `note-entry${index}-title`);
+  note_entry_node_5.textContent = `${title}`;
+  note_entry_node_1.appendChild(note_entry_node_5);
+  
+  var note_entry_node_6 = document.createElement('DIV');
+  note_entry_node_6.setAttribute('class', 'note-description-body');
+  note_entry_node_1.appendChild(note_entry_node_6);
+  
+  var note_entry_node_7 = document.createElement('DIV');
+  note_entry_node_7.setAttribute('class', 'note-description-text');
+  note_entry_node_7.setAttribute('id', `note-entry${index}-description-text`);
+  note_entry_node_7.textContent = `${description}`;
+  note_entry_node_6.appendChild(note_entry_node_7); 
+
+  //dialog to view or edit note entry
+  var note_entry_dialog_node_1 = document.createElement('DIALOG');
+  note_entry_dialog_node_1.setAttribute('class', 'edit-note-popup');
+  note_entry_dialog_node_1.setAttribute('id', `edit-note-entry${index}`);
+  mainPanel.appendChild(note_entry_dialog_node_1);
+  
+  var note_entry_dialog_node_2 = document.createElement('FORM');
+  note_entry_dialog_node_2.setAttribute('class', 'edit-note-popup-form');
+  note_entry_dialog_node_2.setAttribute('id', `edit-note-entry${index}-form`);
+  note_entry_dialog_node_1.appendChild(note_entry_dialog_node_2);
+  
+  var note_entry_dialog_node_3 = document.createElement('DIV');
+  note_entry_dialog_node_3.setAttribute('class', 'edit-note');
+  note_entry_dialog_node_2.appendChild(note_entry_dialog_node_3);
+  
+  var note_entry_dialog_node_4 = document.createElement('DIV');
+  note_entry_dialog_node_4.setAttribute('class', 'edit-note-header');
+  note_entry_dialog_node_3.appendChild(note_entry_dialog_node_4);
+  
+  var note_entry_dialog_node_5 = document.createElement('P');
+  note_entry_dialog_node_5.textContent = "EDIT/VIEW NOTE DETAIL";
+  note_entry_dialog_node_4.appendChild(note_entry_dialog_node_5);
+  
+  var note_entry_dialog_node_7 = document.createElement('DIV');
+  note_entry_dialog_node_7.setAttribute('class', 'edit-note-panel');
+  note_entry_dialog_node_3.appendChild(note_entry_dialog_node_7);
+  
+  var note_entry_dialog_node_8 = document.createElement('DIV');
+  note_entry_dialog_node_8.setAttribute('class', 'edit-note-text-input');
+  note_entry_dialog_node_7.appendChild(note_entry_dialog_node_8);
+  
+  var note_entry_dialog_node_9 = document.createElement('TEXTAREA');
+  note_entry_dialog_node_9.setAttribute('class', 'note-edit-title');
+  note_entry_dialog_node_9.setAttribute('id', `edit-note-entry${index}-title`);
+  note_entry_dialog_node_9.setAttribute('name', 'edit-note-title');
+  note_entry_dialog_node_9.setAttribute('maxlength', '40');
+  note_entry_dialog_node_9.setAttribute('required', '');
+  note_entry_dialog_node_9.textContent = `${title}`;
+  note_entry_dialog_node_8.appendChild(note_entry_dialog_node_9);
+  
+  var note_entry_dialog_node_10 = document.createElement('TEXTAREA');
+  note_entry_dialog_node_10.setAttribute('class', 'note-edit-description');
+  note_entry_dialog_node_10.setAttribute('id', `edit-note-entry${index}-description`);
+  note_entry_dialog_node_10.setAttribute('name', 'edit-note-description');
+  note_entry_dialog_node_10.setAttribute('maxlength', '1000');
+  note_entry_dialog_node_10.setAttribute('required', '');
+  note_entry_dialog_node_10.textContent = `${description}`;
+  note_entry_dialog_node_8.appendChild(note_entry_dialog_node_10);
+
+  var note_entry_dialog_node_11 = document.createElement('DIV');
+  note_entry_dialog_node_11.setAttribute('class', 'edit-note-buttons');
+  note_entry_dialog_node_3.appendChild(note_entry_dialog_node_11);
+  
+  var note_entry_dialog_node_12 = document.createElement('BUTTON');
+  note_entry_dialog_node_12.setAttribute('class', 'note-confirm-edit-btn');
+  note_entry_dialog_node_12.setAttribute('id', `confirm-edit-note-entry${index}`);
+  note_entry_dialog_node_12.setAttribute('type', 'submit');
+  note_entry_dialog_node_12.setAttribute('value', 'default');
+  note_entry_dialog_node_12.textContent = "Edit";
+  note_entry_dialog_node_11.appendChild(note_entry_dialog_node_12);
+  
+  var note_entry_dialog_node_13 = document.createElement('BUTTON');
+  note_entry_dialog_node_13.setAttribute('class', 'note-cancel-edit-btn');
+  note_entry_dialog_node_13.setAttribute('id', `cancel-edit-note-entry${index}`);
+  note_entry_dialog_node_13.textContent = "Close";
+  note_entry_dialog_node_11.appendChild(note_entry_dialog_node_13);
+}
+//function to render note catalogs, add eventlistener to open/close details dialog, delete entry, edit entry and check if textbox is toggled
+function renderNotes (activeTab, notes) {
+  if (activeTab == "MY NOTES") {
+    if (notes.length == 0) {
+      var mainpanel_note_node = document.createElement('SPAN');
+      mainpanel_note_node.setAttribute('class', 'note-empty-message');
+      mainpanel_note_node.textContent = "No notes added yet click the \"+\" button to add."
+      mainPanel.appendChild(mainpanel_note_node);
+    }
+    notes.forEach(function(note, index) {
+      //console.log(entry);
+      displayNoteCatalogEntry (index, note.title, note.description);
+    });
+    //view or edit note details dialog
+    viewOrEditNoteDetails ();
+    //close view or edit note details dialog
+    closeNoteDetails ();
+    //delete note entry
+    deleteNoteCatalog (notes);
+    //submit and reflect note edit form
+    submitEditTodoForm (notes);
+  }
 }
 //pop-up dialog
 class dialogPopupRender {
@@ -838,7 +835,7 @@ class dialogPopupRender {
     dialogPanel.appendChild(dialog_note_node_7);
   }
 }
-//eventlistner only functions
+//EVENTLISTNER FUNCTIONS
 function cancelAdd(e) {
   console.log("Adding canceled");
   e.preventDefault();
@@ -888,7 +885,7 @@ function submitNote (e) {
   console.log("note title and note description submitted successfully");
   dialogCreateNew.close();
 }
-function submitEditTodo(e, index, currentObject) {
+function submitEditTodo(e, index, currentTodoObject) {
   const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
   e.preventDefault(); // Prevent the default form submission behavior
   const modifiedTodoTitle = document.getElementById(`edit-todo-entry${index}-title`).value;
@@ -896,26 +893,26 @@ function submitEditTodo(e, index, currentObject) {
   const modifiedTodoDueDate = document.getElementById(`edit-todo-entry${index}-due-date`).value;
   const modifiedTodoPriority = document.querySelector(`input[name=edit-todo-entry${index}-priority]:checked`).value;
   console.log(index);
-  const currentObjectIteration = currentObject[index];
+  const currentTodoObjectIteration = currentTodoObject[index];
   
-  if (currentObject[index].title != modifiedTodoTitle) {
-    currentObject[index].title = modifiedTodoTitle;
+  if (currentTodoObject[index].title != modifiedTodoTitle) {
+    currentTodoObject[index].title = modifiedTodoTitle;
   } else {console.log("Title not edited");}
-  if (currentObject[index].description != modifiedTodoDescription) {
-    currentObject[index].description = modifiedTodoDescription;
+  if (currentTodoObject[index].description != modifiedTodoDescription) {
+    currentTodoObject[index].description = modifiedTodoDescription;
   } else {console.log("Description not edited");}
-  if (currentObject[index].date != modifiedTodoDueDate) {
-    currentObject[index].date = modifiedTodoDueDate;
+  if (currentTodoObject[index].date != modifiedTodoDueDate) {
+    currentTodoObject[index].date = modifiedTodoDueDate;
   } else {console.log("Due date not edited");}
-  if (currentObject[index].priority != modifiedTodoPriority) {
-    currentObject[index].priority = modifiedTodoPriority;
+  if (currentTodoObject[index].priority != modifiedTodoPriority) {
+    currentTodoObject[index].priority = modifiedTodoPriority;
   } else {console.log("Priority Level not edited");}
   const childNodes = mainPanel.childNodes;
     
   Array.from(childNodes).forEach(child => {
     mainPanel.removeChild(child);
   });
-  currentObject.forEach(function(entry, index) {
+  currentTodoObject.forEach(function(entry, index) {
     //console.log(entry);
     let category = `${todoCategory}`;
     displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
@@ -924,32 +921,295 @@ function submitEditTodo(e, index, currentObject) {
   //todo entry details dialog close
   closeTodoDetails ();
   //Change class if checkbox is toggled
-  checkboxChecker (currentObject);
+  checkboxChecker (currentTodoObject);
   //todo entry delete catalog button
-  deleteCatalog (currentObject);
+  deleteTodoCatalog (currentTodoObject);
   //edit todo entry popup
   openEditTodoDetails ();
   //todo edit dialog close
   closeEditTodoDetails ();
   //todo edit form submit
-  submitEditTodoForm (currentObject);
+  submitEditTodoForm (currentTodoObject);
   dialogEditTodo.close();
 }
-//to submit on the right key depending on what is the current active tab when the create button was clicked
-function sortToCategory (mainTodos, parsedTodoInput ,currentMainPanelWindow) {
-  //For use to loop through keys of mainTodos => categories
-  const todoCategories = Object.keys(mainTodos);
-  for (todoCategory of todoCategories) {
-    const todoCategoryPattern = new RegExp(currentMainPanelWindow, 'i');
-    const isKeyThere = `${todoCategory}` in mainTodos;
-    if (todoCategory.match(todoCategoryPattern) && isKeyThere == true) {
-      mainTodos[`${todoCategory}`].push(parsedTodoInput.mainTodoObject());
-      console.log(parsedTodoInput);
-      console.log(`Added to ${todoCategory} please check updated object below`);
-      console.log(mainTodos);
-    } else if (!todoCategory.match(todoCategoryPattern) && isKeyThere == true) {console.log(`${todoCategory} is currently not the designated category of todo to be added`);
-    } else if (!todoCategory.match(todoCategoryPattern) && isKeyThere == false) {console.log("No category for currently active tab in mainTodos Object");}
-  }
+//submit edit note form
+function submitEditNote(e, index, notes) {
+  const dialogViewOrEditNote = document.querySelector(`#edit-note-entry${index}`);
+  e.preventDefault(); // Prevent the default form submission behavior
+  const modifiedNoteTitle = document.getElementById(`edit-note-entry${index}-title`).value;
+  const modifiedNoteDescription = document.getElementById(`edit-note-entry${index}-description`).value;
+  console.log(index);
+  const currentNoteObjectIteration = notes[index];
+  
+  if (notes[index].title != modifiedNoteTitle) {
+    notes[index].title = modifiedNoteTitle;
+  } else {console.log("Title not edited");}
+  if (notes[index].description != modifiedNoteDescription) {
+    notes[index].description = modifiedNoteDescription;
+  } else {console.log("Description not edited");}
+
+  const childNodes = mainPanel.childNodes;
+
+  Array.from(childNodes).forEach(child => {
+    mainPanel.removeChild(child);
+  });
+  notes.forEach(function(note, index) {
+    //console.log(entry);
+    displayNoteCatalogEntry (index, note.title, note.description);
+  });
+  //view or edit note details dialog
+  viewOrEditNoteDetails ();
+  //close view or edit note details dialog
+  closeNoteDetails ();
+  //delete note entry
+  deleteNoteCatalog (notes);
+  //submit and reflect note edit form
+  submitEditTodoForm (notes);
+  dialogViewOrEditNote.close();
+}
+//todo entry details dialog open with eventlistener
+function openTodoDetails () {
+  const showTodoDetailsBtns = document.querySelectorAll('.todo-catalog-view-details-btn');
+  showTodoDetailsBtns.forEach(function(showTodoDetailsBtn, index) {
+    const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
+    showTodoDetailsBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      dialogTodoDetails.showModal();
+    });
+  });
+}
+//todo entry details dialog close with eventlistener
+function closeTodoDetails () {
+  const closeTodoDetailsBtns = document.querySelectorAll('.close-todo-details-btn');
+  closeTodoDetailsBtns.forEach(function(closeTodoDetailsBtn, index) {
+    const dialogTodoDetails = document.querySelector(`#todo-entry${index}-details`);
+    closeTodoDetailsBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      dialogTodoDetails.close();
+      });
+  });
+}
+//Change class if checkbox is toggled
+function checkboxChecker (currentTodoObject) {
+  const todoEntryCheckBoxes = document.querySelectorAll("input[type=checkbox]");
+        //console.log(todoEntryCheckBoxes);
+  todoEntryCheckBoxes.forEach(function (todoEntryCheckBox, index) {
+    todoEntryCheckBox.addEventListener('change', function(e) {
+      if (this.checked) {
+        console.log("Checkbox is checked..");
+        const checkedbox = e.target;
+        //console.log(checkedbox);
+
+        //get all childNodes of todo catalog entry
+        const toLineThroughEntryChildren = checkedbox.parentNode.childNodes;
+        //Run through each childnodes
+        toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
+          if(toLineThroughEntryChild.classList.contains('todo-catalog-title-default')) {
+            //change class to strikethrough once box is checked
+            toLineThroughEntryChild.classList.remove('todo-catalog-title-default');
+            toLineThroughEntryChild.classList.add('todo-catalog-title-checked');
+            for (let i = 0; i < currentTodoObject.length; i++) {
+              if(currentTodoObject[i].title == toLineThroughEntryChild.textContent) {
+                //change status to true => meaning checked
+                currentTodoObject[i].status = true;
+              }
+            }
+          }
+        });
+      } else {
+          console.log("Checkbox is not checked..");
+          const uncheckedbox = e.target;
+          //console.log(uncheckedbox);
+
+          //get all childNodes of todo catalog entry
+          const toLineThroughEntryChildren = uncheckedbox.parentNode.childNodes;
+          //Run through each childnodes
+          toLineThroughEntryChildren.forEach(function(toLineThroughEntryChild, index) {
+            if(toLineThroughEntryChild.classList.contains('todo-catalog-title-checked')) {
+              //change class to strikethrough once box is checked
+              toLineThroughEntryChild.classList.remove('todo-catalog-title-checked');
+              toLineThroughEntryChild.classList.add('todo-catalog-title-default');
+                  
+              for (let i = 0; i < currentTodoObject.length; i++) {
+                if(currentTodoObject[i].title == toLineThroughEntryChild.textContent) {
+                  //change status to true => meaning checked
+                  currentTodoObject[i].status = false;
+                }
+              }
+            }
+          });
+        }
+    });
+  });
+}
+//todo entry delete catalog button
+function deleteTodoCatalog (currentTodoObject) {
+  const deleteTodoBtns = document.querySelectorAll('.todo-entry-delete-button');
+  deleteTodoBtns.forEach(function(deleteTodoBtn, index) {
+    deleteTodoBtn.addEventListener("click", function(e) {
+      
+      const clickedDelete = e.target;
+      const clickedTodoEntry = clickedDelete.parentNode.id;
+      const tobeRemovedTodoCatalog = document.getElementById(`${clickedTodoEntry}`);
+  
+      //get all childNodes of todo catalog entry
+      const clickedTodoEntryChildren = clickedDelete.parentNode.childNodes;
+      //splice respective entry on object
+      clickedTodoEntryChildren.forEach(function(clickedTodoEntryChild, index) {
+        if(clickedTodoEntryChild.classList.contains('todo-catalog-title-default')||
+        clickedTodoEntryChild.classList.contains('todo-catalog-title-checked')) {
+          //console.log(clickedTodoEntryChild);
+          //console.log(clickedTodoEntryChild.textContent);
+          for (let i = 0; i < currentTodoObject.length; i++) {
+            if(currentTodoObject[i].title == clickedTodoEntryChild.textContent) {
+              console.log(`Successfully removed ${currentTodoObject[i]} entry`);
+              currentTodoObject.splice(i, 1);
+            }
+          }
+        }
+      });
+
+      mainPanel.removeChild(tobeRemovedTodoCatalog);
+      console.log(currentTodoObject);
+      const childNodes = mainPanel.childNodes;
+
+      Array.from(childNodes).forEach(child => {
+        mainPanel.removeChild(child);
+      });
+      currentTodoObject.forEach(function(entry, index) {
+        //console.log(entry);
+        let category = `${todoCategory}`;
+        displayTodoCatalogEntry (index, entry.title, entry.date, category, entry.description, entry.priority, entry.status);
+      });
+      openTodoDetails ();
+      //todo entry details dialog close
+      closeTodoDetails ();
+      //Change class if checkbox is toggled
+      checkboxChecker (currentTodoObject);
+      //todo entry delete catalog button
+      deleteTodoCatalog (currentTodoObject);
+      //edit todo entry popup
+      openEditTodoDetails ();
+      //todo edit dialog close
+      closeEditTodoDetails ();
+      //todo edit form submit
+      submitEditTodoForm (currentTodoObject);
+    });
+  });
+}
+ //edit todo entry popup open 
+function openEditTodoDetails () {
+  const editTodoBtns = document.querySelectorAll('.todo-entry-edit-button');
+  editTodoBtns.forEach(function(editTodoBtn, index) {
+    const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
+    editTodoBtn.addEventListener("click", function(e) {
+      const toEditCatalogEntryElements = editTodoBtn.parentNode.childNodes;
+      //const dialogEditTodo = document.querySelector(`#edit-todo-entry`);
+      //console.log(dialogEditTodo);
+      e.preventDefault();
+      dialogEditTodo.showModal();
+    });
+  });
+}
+//todo edit form submit
+function submitEditTodoForm (currentTodoObject) {
+  const EditTodoForms = document.querySelectorAll('.edit-todo-popup-form');
+  EditTodoForms.forEach(function(EditTodoForm, index) {
+    //console.log(EditTodoForm);
+    EditTodoForm.removeEventListener('submit', submitEditTodo);
+    EditTodoForm.addEventListener("submit", (e) => submitEditTodo(e, index, currentTodoObject));
+  });
+}
+ //edit todo entry popup close
+function closeEditTodoDetails () {
+  const closeEditBtns = document.querySelectorAll('#cancel-edit-todo');
+  closeEditBtns.forEach(function(closeEditBtn, index) {
+    const dialogEditTodo = document.querySelector(`#edit-todo-entry${index}`);
+    closeEditBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      dialogEditTodo.close();
+    });
+  });
+}
+//view and/or edit note catalog entry
+function viewOrEditNoteDetails () {
+  const viewOrEditNoteBtns = document.querySelectorAll('.view-note');
+  viewOrEditNoteBtns.forEach(function(viewOrEditNoteBtn, index) {
+    const dialogViewOrEditNote = document.querySelector(`#edit-note-entry${index}`);
+    viewOrEditNoteBtn.addEventListener("click", function(e) {
+      //const toEditCatalogEntryElements = editTodoBtn.parentNode.childNodes;
+      e.preventDefault();
+      dialogViewOrEditNote.showModal();
+    });
+  });
+}
+//close view/cancel edit note catalog entry
+function closeNoteDetails () {
+  const closeViewNoteBtns = document.querySelectorAll('.note-cancel-edit-btn');
+  closeViewNoteBtns.forEach(function(closeViewNoteBtn, index) {
+    const dialogViewOrEditNote = document.querySelector(`#edit-note-entry${index}`);
+    closeViewNoteBtn.addEventListener("click", function(e) {
+      //const toEditCatalogEntryElements = editTodoBtn.parentNode.childNodes;
+      e.preventDefault();
+      dialogViewOrEditNote.close();
+    });
+  });
+}
+//delete note entry
+function deleteNoteCatalog (notes) {
+  const deleteNoteBtns = document.querySelectorAll('.delete-note');
+  deleteNoteBtns.forEach(function(deleteNoteBtn, index) {
+    deleteNoteBtn.addEventListener("click", function(e) {
+      
+      const clickedDelete = e.target;
+      const clickedNoteEntry = clickedDelete.parentNode.parentNode.id;
+      const tobeRemovedNoteCatalog = document.getElementById(`${clickedNoteEntry}`);
+      //console.log(tobeRemovedNoteCatalog);
+      //get all childNodes of todo catalog entry
+      const clickedNoteEntryChildren = clickedDelete.parentNode.parentNode.childNodes;
+      //splice respective entry on notes
+      clickedNoteEntryChildren.forEach(function(clickedNoteEntryChild, index) {
+        if(clickedNoteEntryChild.classList.contains('note-title')) {
+          //console.log(clickedNoteEntryChild);
+          //console.log(clickedNoteEntryChild.textContent);
+          for (let i = 0; i < notes.length; i++) {
+            if(notes[i].title == clickedNoteEntryChild.textContent) {
+              console.log(notes[i], " removed");
+              notes.splice(i, 1);
+            }
+          }
+        }
+      });
+      mainPanel.removeChild(tobeRemovedNoteCatalog);
+      console.log(notes);
+      const childNodes = mainPanel.childNodes;
+
+      Array.from(childNodes).forEach(child => {
+        mainPanel.removeChild(child);
+      });
+      notes.forEach(function(note, index) {
+        //console.log(entry);
+        displayNoteCatalogEntry (index, note.title, note.description);
+      });
+      //view or edit note details dialog
+    viewOrEditNoteDetails ();
+    //close view or edit note details dialog
+    closeNoteDetails ();
+    //delete note entry
+    deleteNoteCatalog (notes);
+    //submit and reflect note edit form
+    submitEditTodoForm (notes);
+    });
+  });
+}
+//note edit form submit
+function submitEditTodoForm (notes) {
+  const EditNoteForms = document.querySelectorAll('.edit-note-popup-form');
+  EditNoteForms.forEach(function(EditNoteForm, index) {
+    //console.log(EditTodoForm);
+    EditNoteForm.removeEventListener('submit', submitEditNote);
+    EditNoteForm.addEventListener("submit", (e) => submitEditNote(e, index, notes));
+  });
 }
 //variable declarations for dialog for creating new todo, project and note
 const openCreate = document.getElementById("adder");
@@ -979,7 +1239,7 @@ const mainTodos = JSON.parse(localStorage.getItem('mainTodos')) || {
 }
 
 //const projectTodos = JSON.parse(localStorage.getItem('projectTodos')) || [];
-const notes = JSON.parse(localStorage.getItem('notes')) || {};
+const notes = JSON.parse(localStorage.getItem('notes')) || [];
 
 //create a mock details if no object found on local storage
 if (!localStorage.getItem('mainTodos')) { 
@@ -1007,16 +1267,30 @@ if (!localStorage.getItem('mainTodos')) {
   mainTodos.school.push(createMainTodo("Thesis", "Prepare thesis title and chapter 1-3", "2024-06-22", "HIGH", false).mainTodoObject());
   mainTodos.school.push(createMainTodo("Add Course", "Add 3 more units to next sem target courses", "2024-06-27", "HIGH", false).mainTodoObject());
 }
+
+if(!localStorage.getItem('notes')) {
+  notes.push(createNote("Leave Balance", "Current Spend:\n2 VL, 4 FB, 0 SL\n0 BL").mainNoteObject());
+  notes.push(createNote("Country Wishlist", "Japan\nVietnam\nTaiwan").mainNoteObject());
+  notes.push(createNote("Local Travel Wishlist", "La Union\nVigan\nSiargao\nPuerto Princesa\nBoracay\nBaguio\nCamSur").mainNoteObject());
+  notes.push(createNote("2025 Goals", "Take the boards\nGo for a 6-digits job\nBuy more sneakers").mainNoteObject());
+  notes.push(createNote("Macros", "160g Protein\n237g Carbs\n31g Fat\n1900 calories").mainNoteObject());
+  notes.push(createNote("Work Notes", "Cultural Training - July1\nSubmit doc for performance review - July 3\nTalent Review - September").mainNoteObject());
+  notes.push(createNote("Leave Balance Copy", "Current Spend:\n2 VL, 4 FB, 0 SL\n0 BL").mainNoteObject());
+  notes.push(createNote("Country Wishlist Copy", "Japan\nVietnam\nTaiwan").mainNoteObject());
+  notes.push(createNote("Local Travel Wishlist Copy", "La Union\nVigan\nSiargao\nPuerto Princesa\nBoracay\nBaguio\nCamSur").mainNoteObject());
+  notes.push(createNote("2025 Goals Copy", "Take the boards\nGo for a 6-digits job\nBuy more sneakers").mainNoteObject());
+  notes.push(createNote("Macros Copy", "160g Protein\n237g Carbs\n31g Fat\n1900 calories").mainNoteObject());
+  notes.push(createNote("Work Notes Copy", "Cultural Training - July1\nSubmit doc for performance review - July 3\nTalent Review - September").mainNoteObject());
+}
 //Create project tabs initially parsed or created
 createProjectTab (mainTodos);
-
 
 let mainPanelWindow = null;
 let activeProjectCategoryTab = null;
 const projectTabIsActivePattern = new RegExp("projects", 'i');
 /*MAIN PANEL*/
 //Render home summary upon open of page
-//mainPanelOpen.homeSummary();
+mainPanelOpen.homeSummary();
 mainPanelHomeBtn.classList.add('main-panel-menu-active');
 //adding event listener to main nav bar
 mainPanelNavigationBtns.forEach(function(mainPanelNavigationBtn, index) {
@@ -1119,9 +1393,11 @@ mainPanelNavigationBtns.forEach(function(mainPanelNavigationBtn, index) {
                 mainPanelWeekBtn.classList.remove('main-panel-menu-active');
               }
               mainPanelOpen.notes();
+              renderNotes (mainPanelWindow, notes);
               projectCategoryTabs.forEach(function(projectCategoryTab, index) { 
                 projectCategoryTab.classList.remove('main-panel-menu-projects-item-active');
               });
+              //insert renderNotes here
             //}
       } else {
           console.log("No main panel menu assigned to clicked navigation button");
