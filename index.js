@@ -1211,6 +1211,15 @@ function submitEditTodoForm (notes) {
     EditNoteForm.addEventListener("submit", (e) => submitEditNote(e, index, notes));
   });
 }
+//calculate total notes and todo entries
+function calcSummary () {
+  //overall tasks done
+  //total tasks today
+  //total tasks overdue
+  //total tasks this week
+  //total projects
+  //total notes
+}
 //variable declarations for dialog for creating new todo, project and note
 const openCreate = document.getElementById("adder");
 const dialogCreateNewForm = document.querySelector("#create-task-dialog");
